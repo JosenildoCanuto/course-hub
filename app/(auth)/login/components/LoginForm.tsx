@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/lib/auth-actions";
+import { SignIn } from "@/lib/auth/SignIn";
 
 export function LoginForm() {
   return (
@@ -46,7 +46,7 @@ export function LoginForm() {
               </div>
               <Input id="password" name="password" type="password" required />
             </div>
-            <Button type="submit" formAction={login} className="w-full">
+            <Button type="submit" formAction={SignIn} className="w-full">
               Login
             </Button>
           </div>

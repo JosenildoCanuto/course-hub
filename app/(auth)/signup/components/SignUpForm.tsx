@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,9 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "@/lib/auth-actions";
+import { SignUp } from "@/lib/auth/SignUp";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useState } from "react";
 
 export function SignUpForm() {
+  const [role, setRole] = useState<"student" | "admin">("student");
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -24,6 +30,33 @@ export function SignUpForm() {
       <CardContent>
         <form action="">
           <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label>User Type</Label>
+              <ToggleGroup
+                type="single"
+                value={role}
+                onValueChange={(val) =>
+                  val && setRole(val as "student" | "admin")
+                }
+                className="flex justify-center"
+              >
+                <ToggleGroupItem
+                  value="student"
+                  aria-label="Select student"
+                  className="flex-1"
+                >
+                  Student
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  value="admin"
+                  aria-label="Select admin"
+                  className="flex-1"
+                >
+                  Admin
+                </ToggleGroupItem>
+              </ToggleGroup>
+              <input type="hidden" name="role" value={role} />
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="first-name">First name</Label>
@@ -58,7 +91,7 @@ export function SignUpForm() {
               <Label htmlFor="password">Password</Label>
               <Input name="password" id="password" type="password" />
             </div>
-            <Button formAction={signup} type="submit" className="w-full">
+            <Button formAction={SignUp} type="submit" className="w-full">
               Create an account
             </Button>
           </div>

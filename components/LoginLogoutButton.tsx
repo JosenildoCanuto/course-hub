@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { signout } from "@/lib/auth-actions";
+import { SignOut } from "@/lib/auth/LogOut";
 
 const LoginButton = () => {
   const [user, setUser] = useState<any>(null);
@@ -22,7 +22,7 @@ const LoginButton = () => {
     return (
       <Button
         onClick={() => {
-          signout();
+          SignOut();
           setUser(null);
         }}
       >

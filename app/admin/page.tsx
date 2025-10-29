@@ -8,7 +8,7 @@ export default function AdminPage() {
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
           <LoginButton />
         </div>
-        <h1 className="text-2xl font-bold">Painel do Admin</h1>
+        <h1 className="text-2xl leading-none font-semibold">Painel do Admin</h1>
       </div>
     </AuthGuard>
   );

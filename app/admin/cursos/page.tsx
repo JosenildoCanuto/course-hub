@@ -2,10 +2,13 @@ import { getAdminCourses } from "@/lib/courses";
 import { AuthGuard } from "@/utils/auth/AuthGuard";
 import { createServerClientWithCookies } from "@/utils/supabase/server";
 import { CourseCard } from "./components/CourseCard";
-import { CourseActions } from "./components/CourseActions";
+import { Button } from "@/components/ui/button";
+import { SquarePlus } from "lucide-react";
+import Link from "next/link";
 
 export default async function AdminCoursesPage() {
   const supabase = await createServerClientWithCookies();
+  
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -16,11 +19,19 @@ export default async function AdminCoursesPage() {
 
   return (
     <AuthGuard requireRole="admin">
-      <div className="p-4 sm:p-8">
-        <h1 className="text-xl font-semibold text-primary mb-4">Meus Cursos</h1>
+      <div className="flex flex-col gap-6 p-4 sm:p-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl leading-none font-semibold">Meus Cursos</h1>
+          <Link href="cursos/novo">
+            <Button>
+              <SquarePlus />
+              Criar curso
+            </Button>
+          </Link>
+        </div>
         <div className="flex w-full flex-wrap gap-2 lg:gap-4">
           {courses.map((course: any, i) => (
-            <div key={i} className="w-full sm:w-[48%] lg:w-[25%]">
+            <div key={i} className="w-full sm:w-[48%] lg:w-[25%] 3xl:w-[20%]">
               <CourseCard
                 title={course.title}
                 description={course.description}

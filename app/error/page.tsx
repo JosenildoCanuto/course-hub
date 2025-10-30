@@ -1,22 +1,19 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
+// app/error/page.tsx
+import { Suspense } from "react";
+import { ErrorContent } from "./components/ErrorContent";
 
 export default function ErrorPage() {
-  const searchParams = useSearchParams();
-
-  const errorMessage = searchParams.get("message");
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-4">Ocorreu um Erro!</h1>
-      {errorMessage ? (
-        <p className="text-lg">
-          Detalhes: **{decodeURIComponent(errorMessage)}**
-        </p>
-      ) : (
-        <p>Tente novamente mais tarde.</p>
-      )}
-    </div>
+    <Suspense
+      fallback={
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <h1 className="text-3xl font-bold mb-4">
+            Carregando Detalhes do Erro...
+          </h1>
+        </div>
+      }
+    >
+      <ErrorContent />
+    </Suspense>
   );
 }

@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default async function AdminCoursesPage() {
   const supabase = await createServerClientWithCookies();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -31,14 +31,14 @@ export default async function AdminCoursesPage() {
         </div>
         <div className="flex w-full flex-wrap gap-2 lg:gap-4">
           {courses.map((course: any, i) => (
-            <div key={i} className="w-full sm:w-[48%] lg:w-[25%] 3xl:w-[20%]">
-              <CourseCard
-                title={course.title}
-                description={course.description}
-                thumbnail={course.thumbnail}
-                status={course.status}
-              />
-            </div>
+            <CourseCard
+              key={course.id}
+              id={course.id}
+              title={course.title}
+              description={course.description}
+              thumbnail={course.thumbnail}
+              status={course.status}
+            />
           ))}
         </div>
       </div>

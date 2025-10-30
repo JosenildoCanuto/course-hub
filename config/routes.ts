@@ -8,6 +8,7 @@ export const ROUTES = {
   ADMIN: {
     ADM: "/admin",
     COURSES: "/admin/courses",
+    COURSESEDIT: "/admin/courses/",
     SETTINGS: "/admin/settings",
   },
   STUDENT: {

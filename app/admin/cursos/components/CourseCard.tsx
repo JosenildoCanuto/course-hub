@@ -39,6 +39,10 @@ export function CourseCard({
   const router = useRouter();
   const supabase = createClient();
 
+  const handleCardClick = () => {
+    router.push(`/admin/cursos/${id}/aulas`);
+  };
+
   const handleEdit = () => {
     router.push(`/admin/cursos/${id}/editar`);
   };
@@ -67,7 +71,10 @@ export function CourseCard({
 
   return (
     <>
-      <Card className="w-full max-w-sm">
+      <Card
+        className="w-full max-w-sm cursor-pointer transition-all hover:shadow-md hover:scale-[1.02]"
+        onClick={handleCardClick}
+      >
         <CardHeader className="px-4">
           <div className="relative w-full h-40">
             <Image

@@ -1,5 +1,3 @@
-// components/EditCourse.tsx
-
 import { CourseForm } from "../../../novo/components/CourseForm";
 
 type Props = { course: any };

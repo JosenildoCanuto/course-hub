@@ -12,8 +12,8 @@ import {
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 
 interface CourseActionsProps {
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: (e?: React.MouseEvent) => void;
+  onDelete: (e?: React.MouseEvent) => void;
 }
 
 export function CourseActions({ onEdit, onDelete }: CourseActionsProps) {

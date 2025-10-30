@@ -187,7 +187,7 @@ export function CourseForm({ course }: CourseFormProps) {
       <div className="flex flex-col gap-4">
         <Label>Status</Label>
         <Select
-          onValueChange={(value) => setValue("status", value)}
+          onValueChange={(value) => setValue("status", value as Course["status"])}
           defaultValue={course?.status || "unavailable"}
         >
           <SelectTrigger>

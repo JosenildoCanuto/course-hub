@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { ConfirmDialog } from "./DialogConfirm";
+import { CourseModal } from "../[id]/editar/components/CourseModal";
 
 type CourseCardProps = {
   id: string;
@@ -34,6 +35,7 @@ export function CourseCard({
 }: CourseCardProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // 👈 controle do modal
 
   const isAvailable = status === "available";
   const router = useRouter();
@@ -43,11 +45,13 @@ export function CourseCard({
     router.push(`/admin/cursos/${id}/aulas`);
   };
 
-  const handleEdit = () => {
-    router.push(`/admin/cursos/${id}/editar`);
+  const handleEdit = (e?: React.MouseEvent) => {
+    e?.stopPropagation?.();
+    setModalOpen(true); // 👈 abre o modal
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e?: React.MouseEvent) => {
+    e?.stopPropagation?.();
     setDeleteDialogOpen(true);
   };
 
@@ -56,7 +60,6 @@ export function CourseCard({
 
     try {
       const { error } = await supabase.from("courses").delete().eq("id", id);
-
       if (error) throw error;
 
       toast.success(`Curso "${title}" excluído com sucesso!`);
@@ -67,6 +70,10 @@ export function CourseCard({
     } finally {
       setDeleteLoading(false);
     }
+  };
+
+  const handleCourseSuccess = () => {
+    router.refresh(); // 👈 atualiza sem F5
   };
 
   return (
@@ -92,7 +99,7 @@ export function CourseCard({
             </h3>
             <CourseActions onEdit={handleEdit} onDelete={handleDelete} />
           </div>
-          <p className=" text-primary text-sm">{description}</p>
+          <p className="text-primary text-sm">{description}</p>
         </CardContent>
         <CardFooter>
           <Badge
@@ -106,6 +113,7 @@ export function CourseCard({
           </Badge>
         </CardFooter>
       </Card>
+
       <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
@@ -114,6 +122,19 @@ export function CourseCard({
         description={`Tem certeza que deseja excluir o curso "${title}"? Esta ação não pode ser desfeita.`}
         confirmText="Excluir"
         loading={deleteLoading}
+      />
+
+      <CourseModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        course={{
+          id,
+          title,
+          description,
+          thumbnail,
+          status,
+        }}
+        onSuccess={handleCourseSuccess}
       />
     </>
   );

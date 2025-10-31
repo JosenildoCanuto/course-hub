@@ -1,9 +1,8 @@
-// app/admin/aulas/components/LessonsManagement.tsx
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Video } from "lucide-react";
+import { Plus, SquarePlus, Video } from "lucide-react";
 import { LessonModal } from "./LessonModal";
 import { LessonCard } from "./LessonCard";
 import { Loading } from "@/components/Loading";
@@ -77,7 +76,7 @@ export function LessonsManagement({ initialData }: LessonsManagementProps) {
         <div key={course.id}>
           <div className="flex flex-row items-center justify-end">
             <Button onClick={() => handleAddLesson(course)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <SquarePlus />
               Adicionar Aula
             </Button>
           </div>

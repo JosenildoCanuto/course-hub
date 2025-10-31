@@ -44,7 +44,7 @@ export default async function CourseLessonsPage({ params }: Props) {
       <div className="container mx-auto py-6 px-6">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-bold">Gerenciar Aulas</h1>
+            <h1 className="text-2xl leading-none font-semibold">Gerenciar Aulas</h1>
             <p className="text-muted-foreground">{course.title}</p>
             <Badge variant="secondary">
               {lessonsCount} aula

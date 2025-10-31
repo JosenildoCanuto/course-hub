@@ -1,7 +1,7 @@
-import { createServerClientWithCookies } from "@/utils/supabase/server";
+import { createServerClientSSR } from "@/utils/supabase/server";
 
 export async function getAdminCourses(adminId: string) {
-  const supabase = await createServerClientWithCookies();
+  const supabase = await createServerClientSSR();
 
   const { data, error } = await supabase
     .from("courses")

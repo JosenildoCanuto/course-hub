@@ -18,7 +18,9 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/app/admin/components/Loading";
+import { SupabaseError } from "@/types/global";
+import { CoursePreview } from "@/types/courses";
 
 type valueForm = {
   type: "title" | "description" | "thumbnail";
@@ -98,10 +100,9 @@ export function CourseForm({ course }: CourseFormProps) {
     }
   }, [course, setValue]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CoursePreview) => {
     try {
       setLoading(true);
-
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -132,9 +133,10 @@ export function CourseForm({ course }: CourseFormProps) {
         toast.success(`Curso "${data.title}" criado com sucesso!`);
       }
 
-      router.push("/admin/cursos");
-    } catch (err: any) {
-      toast.error(err.message || "Erro ao salvar curso");
+      router.push("/admin/");
+    } catch (error: unknown) {
+      const supabaseErro = error as SupabaseError;
+      toast.error(supabaseErro.message || "Erro ao salvar curso");
     } finally {
       setLoading(false);
     }
@@ -187,7 +189,9 @@ export function CourseForm({ course }: CourseFormProps) {
       <div className="flex flex-col gap-4">
         <Label>Status</Label>
         <Select
-          onValueChange={(value) => setValue("status", value as Course["status"])}
+          onValueChange={(value) =>
+            setValue("status", value as Course["status"])
+          }
           defaultValue={course?.status || "unavailable"}
         >
           <SelectTrigger>

@@ -1,4 +1,3 @@
-// app/admin/cursos/novo/page.tsx
 import { AuthGuard } from "@/utils/auth/AuthGuard";
 import { CourseForm } from "./components/CourseForm";
 import { Card } from "@/components/ui/card";

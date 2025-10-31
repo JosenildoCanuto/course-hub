@@ -1,23 +1,15 @@
-// app/admin/aulas/components/LessonsManagement.tsx
 "use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Video } from "lucide-react";
+import { SquarePlus, Video } from "lucide-react";
 import { LessonModal } from "./LessonModal";
 import { LessonCard } from "./LessonCard";
-import { Loading } from "@/components/Loading";
-import { Lesson } from "@/types/lesson";
+import { Loading } from "@/app/admin/components/Loading";
+import { useRouter } from "next/navigation";
+import { Lesson, LessonsManagementProps } from "@/types/lessons";
+import { CourseWithLessons } from "@/types/courses";
 
-type CourseWithLessons = {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-};
-
-type LessonsManagementProps = {
-  initialData: CourseWithLessons[];
-};
 
 export function LessonsManagement({ initialData }: LessonsManagementProps) {
   const [courses, setCourses] = useState<CourseWithLessons[]>(initialData);
@@ -26,6 +18,8 @@ export function LessonsManagement({ initialData }: LessonsManagementProps) {
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   if (loading) return <Loading />;
 
@@ -77,7 +71,7 @@ export function LessonsManagement({ initialData }: LessonsManagementProps) {
         <div key={course.id}>
           <div className="flex flex-row items-center justify-end">
             <Button onClick={() => handleAddLesson(course)}>
-              <Plus className="w-4 h-4 mr-2" />
+              <SquarePlus />
               Adicionar Aula
             </Button>
           </div>
@@ -97,6 +91,11 @@ export function LessonsManagement({ initialData }: LessonsManagementProps) {
                     video_url={lesson.video_url}
                     lesson_order={lesson.lesson_order}
                     status={lesson.status}
+                    onClick={() =>
+                      router.push(
+                        `/admin/cursos/${course.id}?lesson=${lesson.id}`
+                      )
+                    }
                     onEdit={() => handleEditLesson(lesson, course)}
                     onDelete={() => handleDeleteSuccess(lesson.id)}
                   />

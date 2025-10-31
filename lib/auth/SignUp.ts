@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/client";
+import { createServerClientSSR } from "@/utils/supabase/server";
 
 export async function SignUp(formData: FormData) {
   const name = `${formData.get("first-name")} ${formData.get("last-name")}`;
@@ -10,7 +10,7 @@ export async function SignUp(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const supabase = createClient();
+  const supabase = await createServerClientSSR();
 
   const { error } = await supabase.auth.signUp({
     email,

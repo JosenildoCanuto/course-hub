@@ -1,6 +1,6 @@
 import { AuthGuard } from "@/utils/auth/AuthGuard";
 import { Card } from "@/components/ui/card";
-import { createServerClientWithCookies } from "@/utils/supabase/server";
+import { createServerClientSSR } from "@/utils/supabase/server";
 import { CourseForm } from "../../novo/components/CourseForm";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default async function EditCoursePage({ params }: Props) {
   const { id } = await params;
 
-  const supabase = await createServerClientWithCookies();
+  const supabase = await createServerClientSSR();
 
   const { data: course } = await supabase
     .from("courses")

@@ -17,6 +17,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { ConfirmDialog } from "./DialogConfirm";
 import { CourseModal } from "../[id]/editar/components/CourseModal";
+import { SupabaseError } from "@/types/global";
 
 type CourseCardProps = {
   id: string;
@@ -35,7 +36,7 @@ export function CourseCard({
 }: CourseCardProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); // 👈 controle do modal
+  const [modalOpen, setModalOpen] = useState(false);
 
   const isAvailable = status === "available";
   const router = useRouter();
@@ -47,7 +48,7 @@ export function CourseCard({
 
   const handleEdit = (e?: React.MouseEvent) => {
     e?.stopPropagation?.();
-    setModalOpen(true); // 👈 abre o modal
+    setModalOpen(true);
   };
 
   const handleDelete = (e?: React.MouseEvent) => {
@@ -65,15 +66,16 @@ export function CourseCard({
       toast.success(`Curso "${title}" excluído com sucesso!`);
       setDeleteDialogOpen(false);
       router.refresh();
-    } catch (err: any) {
-      toast.error(err.message || "Erro ao excluir curso");
+    } catch (error: unknown) {
+      const supabaseError = error as SupabaseError;
+      toast.error(supabaseError.message || "Erro ao excluir curso");
     } finally {
       setDeleteLoading(false);
     }
   };
 
   const handleCourseSuccess = () => {
-    router.refresh(); // 👈 atualiza sem F5
+    router.refresh();
   };
 
   return (
@@ -85,7 +87,7 @@ export function CourseCard({
         <CardHeader className="px-4">
           <div className="relative w-full h-40">
             <Image
-              src={thumbnail}
+              src={thumbnail || "/placeholder-image.jpg"}
               alt={title}
               fill
               className="object-cover rounded-xl"

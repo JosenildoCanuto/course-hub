@@ -15,16 +15,8 @@ import { ConfirmDialog } from "../../../components/DialogConfirm";
 import Image from "next/image";
 import Link from "next/link";
 import { CourseActions } from "../../../components/CourseActions";
-
-type LessonCardProps = {
-  id: string;
-  title: string;
-  video_url: string;
-  lesson_order: number;
-  status: "available" | "unavailable";
-  onEdit: () => void;
-  onDelete: () => void;
-};
+import { SupabaseError } from "@/types/global";
+import { LessonCardProps } from "@/types/lessons";
 
 export function LessonCard({
   id,
@@ -34,6 +26,7 @@ export function LessonCard({
   status,
   onEdit,
   onDelete,
+  onClick,
 }: LessonCardProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -50,10 +43,13 @@ export function LessonCard({
       if (error) throw error;
 
       toast.success(`Aula "${title}" excluída com sucesso!`);
+
       setDeleteDialogOpen(false);
+
       onDelete();
-    } catch (error: any) {
-      toast.error(error.message || "Erro ao excluir aula");
+    } catch (error: unknown) {
+      const supabaseError = error as SupabaseError;
+      toast.error(supabaseError.message || "Erro ao excluir aula");
     } finally {
       setDeleteLoading(false);
     }
@@ -72,11 +68,14 @@ export function LessonCard({
 
   return (
     <>
-      <Card className="w-full max-w-sm cursor-pointer transition-all hover:shadow-md">
+      <Card
+        onClick={onClick}
+        className="w-full max-w-sm cursor-pointer transition-all hover:shadow-md"
+      >
         <CardHeader className="px-4">
           <div className="relative w-full h-40">
             <Image
-              src={thumbnailUrl}
+              src={thumbnailUrl || "/placeholder-image.jpg"}
               alt={`Thumbnail da aula: ${title}`}
               fill
               className="object-cover rounded-xl"

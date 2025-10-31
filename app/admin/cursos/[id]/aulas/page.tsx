@@ -1,5 +1,5 @@
 import { AuthGuard } from "@/utils/auth/AuthGuard";
-import { createServerClientWithCookies } from "@/utils/supabase/server";
+import { createServerClientSSR } from "@/utils/supabase/server";
 import { getLessonsCourses } from "@/lib/lessons";
 import { LessonsManagement } from "./components/LessonsManagement";
 import { Card } from "@/components/ui/card";
@@ -11,7 +11,7 @@ type Props = {
 
 export default async function CourseLessonsPage({ params }: Props) {
   const { id } = await params;
-  const supabase = await createServerClientWithCookies();
+  const supabase = await createServerClientSSR();
 
   const {
     data: { user },

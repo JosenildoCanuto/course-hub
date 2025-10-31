@@ -19,21 +19,8 @@ import {
 } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
-
-type Course = {
-  id?: string;
-  title: string;
-  description: string;
-  thumbnail?: string;
-  status: "available" | "unavailable";
-};
-
-type CourseModalProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  course?: Course | null;
-  onSuccess: (course: Course) => void;
-};
+import { SupabaseError } from "@/types/global";
+import { Course, CourseModalProps } from "@/types/courses";
 
 const supabase = createClient();
 
@@ -114,14 +101,15 @@ export function CourseModal({
 
       onSuccess(data);
       onOpenChange(false);
-    } catch (err: any) {
-      toast.error(err.message || "Erro ao salvar curso");
+    } catch (error: unknown) {
+      const supabaseError = error as SupabaseError;
+      toast.error(supabaseError.message || "Erro ao salvar curso");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (field: keyof Course, value: any) => {
+  const handleInputChange = (field: keyof Course, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

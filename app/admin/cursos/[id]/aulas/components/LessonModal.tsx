@@ -19,21 +19,8 @@ import {
 } from "@/components/ui/select";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
-import { Lesson } from "@/types/lesson";
-
-type CourseWithLessons = {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-};
-
-type LessonModalProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  course: CourseWithLessons | null;
-  lesson?: Lesson | null;
-  onSuccess: (lesson: Lesson) => void;
-};
+import { SupabaseError } from "@/types/global";
+import { LessonModalProps } from "@/types/lessons";
 
 export function LessonModal({
   open,
@@ -117,16 +104,18 @@ export function LessonModal({
       }
 
       onOpenChange(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const supabaseError = error as SupabaseError;
       toast.error(
-        error.message || `Erro ao ${isEditing ? "atualizar" : "criar"} aula`
+        supabaseError.message ||
+          `Erro ao ${isEditing ? "atualizar" : "criar"} aula`
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | number) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,

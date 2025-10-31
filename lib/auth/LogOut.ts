@@ -1,13 +1,12 @@
 "use server";
 import { redirect } from "next/navigation";
 
-import { createServerClientWithCookies } from "@/utils/supabase/server";
+import { createServerClientSSR } from "@/utils/supabase/server";
 
 export async function SignOut() {
-  const supabase = await createServerClientWithCookies();
+  const supabase = await createServerClientSSR();
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.log(error);
     redirect("/error");
   }
 

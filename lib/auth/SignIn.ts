@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { createServerClientWithCookies } from "@/utils/supabase/server";
+import { createServerClientSSR } from "@/utils/supabase/server";
 
 import { ROUTES } from "@/config/routes";
 
@@ -13,7 +13,7 @@ const ROLE_HOME_PATH = {
 };
 
 export async function SignIn(formData: FormData) {
-  const supabase = await createServerClientWithCookies();
+  const supabase = await createServerClientSSR();
 
   const data = {
     email: formData.get("email") as string,

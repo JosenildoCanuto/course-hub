@@ -1,15 +1,11 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { ROUTES } from "@/config/routes";
-import { Loading } from "@/components/Loading";
-
-interface AuthGuardProps {
-  children: ReactNode;
-  requireRole?: "admin" | "student";
-}
+import { Loading } from "@/app/admin/components/Loading";
+import { AuthGuardProps } from "@/types/auth";
 
 export function AuthGuard({ children, requireRole }: AuthGuardProps) {
   const [loading, setLoading] = useState(true);
@@ -63,7 +59,7 @@ export function AuthGuard({ children, requireRole }: AuthGuardProps) {
     checkAuth();
   }, [router, pathname, requireRole, supabase]);
 
-  if (loading) <Loading />
+  if (loading) <Loading />;
 
   return <>{children}</>;
 }
